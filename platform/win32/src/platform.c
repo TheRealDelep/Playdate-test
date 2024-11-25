@@ -1,7 +1,8 @@
-#include "stdio.h"
+#include "SDL3/SDL.h"
 
 #include "platform.h"
 
-void platform_hello() {
-    printf("Hello from win32 platform.c");
+int PL_get_screen_widht() {
+    int width;
+    SDL_GetWindowSize()
 }

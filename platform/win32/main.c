@@ -1,11 +1,11 @@
 #include "stdio.h"
+
+#include <SDL3/SDL.h>
+
+#include "win32.h"
 #include "game.h"
-#include "SDL3/SDL.h"
 
 int main() {
-    printf("Hello from win32! main.c\n");
-    game_hello();
-
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         printf("failed to initialize sdl");
         return 1;
@@ -18,16 +18,26 @@ int main() {
         return 1;
     }
 
+    game_init(); 
+
     bool should_quit = false;
     SDL_Event e;
+    
+    float dt = 0;
 
-    while(!should_quit) {
+    while(true) {
         while(SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_ESCAPE)) {
-                should_quit = true;
+            if (e.type == SDL_EVENT_QUIT || (
+                e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_ESCAPE)) {           
+                goto exit;
             }
+
+            dt = ((float)SDL_GetTicks() / 1000.0f) - dt;
+            game_run(dt);
         }
     }
 
+exit:
+    game_deinit();
     return 0;
 }

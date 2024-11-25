@@ -2,6 +2,10 @@ $program = "game"
 $platform = "win32"
 $run = $false
 
+if (-not(Test-Path -Path "out/")) {
+    mkdir out/
+}
+
 for ($i = 0; $i -lt $args.Count; $i++) {
     switch ($args[$i]) {
         "pd" { $platform = "playdate"; break }
@@ -27,7 +31,7 @@ switch ($platform) {
         $include = "${include} -Iplatform/win32/libs/SDL/include"
 
         if (-not (Test-Path -Path "platform/win32/libs/SDL/build/SDL3.dll")) {
-            cmake -S platform/win32/libs/SDL -B platform/win32/libs/SDL/build -G "Unix Makefiles"
+            cmake -S platform/win32/libs/SDL -B platform/win32/libs/SDL/build -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMADS=ON
             cmake --build platform/win32/libs/SDL/build
         }
 
@@ -45,10 +49,10 @@ switch ($platform) {
     }
 }
 
-$cc_command = "${env:cc} $src $include $libs -o $out $link_flags"
+$cc_command = "${env:cc} $src $include $libs -o $out $link_flags $flags"
 echo $cc_command
 $res = Invoke-Expression $cc_command
 echo $res
 
-if (!$?) { return }
+if (-not $?) { return }
 & $out
