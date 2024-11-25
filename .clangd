@@ -1,0 +1,35 @@
+CompileFlags:
+  # Default flags that apply to all files
+  Add: 
+    - -Igame/include
+    - -Iplatform/include
+    - -Iplatform/win32/libs/SDL/include  # Only for win32 platform
+    
+  RemapIncludes:
+    - from: platform/win32/src
+      to: platform/win32/src
+    - from: game/src
+      to: game/src
+
+  # Set up the `-std=c++17` or `-std=c99` flags if needed
+  # Add: 
+  #   - -std=c++17
+
+  # Optional: configure the paths for the compiler (clang)
+  # If `clangd` is not automatically found, you can specify its path here:
+  # Clang:
+  #   Path: /path/to/clang
+
+  # Optional: you can specify where your headers are located or where to look for the files.
+  # This is useful for large codebases with multiple external dependencies.
+  # FileSearch:
+  #   - path: /path/to/your/include
+  #   - path: /path/to/another/include
+  
+Diagnostics:
+  # Enable/Disable specific warnings or errors
+  ClangTidyChecks: "*, -clang-analyzer-*"
+
+# In case you have an existing `compile_commands.json`, you can include it here for clangd to use
+# CompileCommands:
+#   - path: /path/to/compile_commands.json
