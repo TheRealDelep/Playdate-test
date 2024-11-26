@@ -1,3 +1,6 @@
 [submodule "platform/win32/libs/SDL"]
 	path = platform/win32/libs/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "platform/win32/libs/SDL_ttf"]
+	path = platform/win32/libs/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf

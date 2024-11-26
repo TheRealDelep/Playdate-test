@@ -20,7 +20,7 @@ if ($program -eq "editor" -and $platform -eq "playdate") {
 }
 
 $src = "platform/${platform}/main.c platform/${platform}/src/*.c game/src/*.c"
-$include = "-Igame/include -Iplatform/include -Iplatform/win32/include"
+$include = "-Igame/include -Iplatform/include -Iplatform/win32/include -I${env:PLAYDATE_SDK_PATH}/C_API"
 $libs = ""
 $link_flags = ""
 $flags = "-MJ compile_commands.json"
@@ -29,7 +29,16 @@ $out = ""
 switch ($platform) {
     "win32" { 
         $out = "out/game.exe" 
-        $include = "${include} -Iplatform/win32/libs/SDL/include"
+        $include = "${include} -Iplatform/win32/libs/SDL/include -Iplatform/win32/libs/SDL_ttf/include"
+
+        if (-not (Test-Path -Path "platform/win32/libs/SDL/build/SDL3.dll")) {
+            cmake -S platform/win32/libs/SDL -B platform/win32/libs/SDL/build -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMADS=ON
+            cmake --build platform/win32/libs/SDL/build
+        }
+
+        if (-not(Test-Path -Path "out/SDL3.dll")) {
+            cp "platform/win32/libs/SDL/build/SDL3.dll" "out/SDL3.dll"
+        }
 
         if (-not (Test-Path -Path "platform/win32/libs/SDL/build/SDL3.dll")) {
             cmake -S platform/win32/libs/SDL -B platform/win32/libs/SDL/build -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMADS=ON

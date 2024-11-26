@@ -1,9 +1,13 @@
-#include "stdio.h"
+#include <stdio.h>
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_render.h>
 
 #include "win32.h"
 #include "game.h"
+
+SDL_Window *window;
+SDL_Renderer *renderer;
 
 int main() {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -12,6 +16,7 @@ int main() {
     }
 
     window = SDL_CreateWindow("sdl-template", 800, 600, 0);
+    renderer = SDL_CreateRenderer(window, "renderer");
     
     if (window == NULL) {
         printf("failed to create window");
