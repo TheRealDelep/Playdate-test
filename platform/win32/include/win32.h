@@ -1,5 +1,5 @@
 #pragma once
 
-#include "SDL3/SDL_video.h"
+#include <SDL3/SDL_video.h>
 
-SDL_Window *window;
+static SDL_Window *window;

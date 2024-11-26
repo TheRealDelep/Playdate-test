@@ -20,9 +20,10 @@ if ($program -eq "editor" -and $platform -eq "playdate") {
 }
 
 $src = "platform/${platform}/main.c platform/${platform}/src/*.c game/src/*.c"
-$include = "-Igame/include -Iplatform/include"
+$include = "-Igame/include -Iplatform/include -Iplatform/win32/include"
 $libs = ""
 $link_flags = ""
+$flags = "-MJ compile_commands.json"
 
 $out = ""
 switch ($platform) {
@@ -53,6 +54,12 @@ $cc_command = "${env:cc} $src $include $libs -o $out $link_flags $flags"
 echo $cc_command
 $res = Invoke-Expression $cc_command
 echo $res
+
+#compile-commands generate by clang are wrongly formatted
+$content = Get-Content -Raw -Path compile_commands.json
+$content_fixed = $content.Substring(0, $content.Length -3)
+$content = "[ $content_fixed ]"
+Set-Content -Path .\compile_commands.json -Value $content
 
 if (-not $?) { return }
 & $out

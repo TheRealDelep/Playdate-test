@@ -11,7 +11,7 @@ int main() {
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("sdl-template", 800, 600, 0);
+    window = SDL_CreateWindow("sdl-template", 800, 600, 0);
     
     if (window == NULL) {
         printf("failed to create window");
@@ -20,9 +20,7 @@ int main() {
 
     game_init(); 
 
-    bool should_quit = false;
     SDL_Event e;
-    
     float dt = 0;
 
     while(true) {
