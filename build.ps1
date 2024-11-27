@@ -26,6 +26,8 @@ $link_flags = ""
 $flags = "-MJ compile_commands.json"
 
 $out = ""
+$cc_command = ""
+
 switch ($platform) {
     "win32" { 
         $out = "out/game.exe" 
@@ -54,9 +56,16 @@ switch ($platform) {
         break
     }
     "playdate" { 
-        $out = "out/game.dll" 
+        $out = "out/pdex.dll" 
         $include = "${include} -Iplatform/playdate/include -I${env:PLAYDATE_SDK_PATH}/C_API"
-        $flags = "${flags} -shared -DTARGET_EXTENSION"
+        $flags = "${flags} -shared -fPIC -lm -DTARGET_SIMULATOR=1 -DTARGET_EXTENSION=1"
+
+        $pdc_flags = "${env:PLAYDATE_SDK_PATH}"
+
+        # build for simulator
+        $source_dir = out/pd_source
+
+        $pdc_command = "pdc ${pdc_flags} ${source_dir} out/game" 
         break
     }
 }

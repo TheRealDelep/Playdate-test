@@ -1,8 +1,14 @@
 #include "platform.h"
 #include "game.h"
 
-void game_init() {}
-void game_deinit() {}
+void game_init() {
+    PL_log("Initializing game.");
+    PL_use_default_font();
+}
+
+void game_deinit() {
+    PL_log("Deinitializing game.");
+}
 
 void game_run(float dt) {
     int s_width = PL_get_screen_width();
